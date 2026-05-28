@@ -1,0 +1,1317 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quantitative Measures Studio</title>
+  <meta name="description" content="Interactive simulations for understanding quantitative measurements in a mixed methods pedagogical friction study.">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #09131d;
+      --bg-deep: #111b2a;
+      --shell-ink: #f4f7fb;
+      --shell-muted: #b8c4d1;
+      --panel: #ffffff;
+      --ink: #16212b;
+      --muted: #5b6773;
+      --line: #d9e1e8;
+      --soft: #edf3f7;
+      --teal: #0e7c7b;
+      --teal-dark: #075f60;
+      --indigo: #3d4f91;
+      --amber: #c47a20;
+      --red: #b64646;
+      --green: #357d4f;
+      --shadow: 0 18px 50px rgba(22, 33, 43, 0.09);
+      --radius: 8px;
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 46%, #0b1118 100%);
+      color: var(--ink);
+      font-family: var(--font);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(184, 196, 209, 0.2);
+      background: rgba(9, 19, 29, 0.92);
+      backdrop-filter: blur(14px);
+    }
+
+    .header-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 14px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 220px;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--teal), var(--indigo));
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .brand strong {
+      display: block;
+      color: var(--shell-ink);
+      font-size: 0.98rem;
+      line-height: 1.1;
+    }
+
+    .brand span {
+      display: block;
+      color: var(--shell-muted);
+      font-size: 0.78rem;
+      margin-top: 2px;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--shell-muted);
+      font-size: 0.86rem;
+      font-weight: 650;
+      padding: 8px 10px;
+      border-radius: 6px;
+    }
+
+    nav a:hover,
+    nav a:focus-visible {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.09);
+      outline: none;
+    }
+
+    main {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 34px 22px 70px;
+    }
+
+    .intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+      gap: 26px;
+      align-items: end;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      color: var(--shell-ink);
+      font-size: clamp(2rem, 4vw, 4.2rem);
+      line-height: 1.02;
+      margin: 0 0 16px;
+      max-width: 800px;
+      letter-spacing: 0;
+    }
+
+    .intro p {
+      margin: 0;
+      color: var(--shell-muted);
+      font-size: 1.05rem;
+      max-width: 760px;
+    }
+
+    .method-note {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .method-note h2 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .method-note p {
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .studio {
+      display: grid;
+      grid-template-columns: 315px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+      margin-top: 18px;
+    }
+
+    .controls,
+    .workspace,
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .controls {
+      position: sticky;
+      top: 88px;
+      padding: 18px;
+    }
+
+    .controls h2,
+    .workspace h2,
+    .section h2 {
+      margin: 0;
+      font-size: 1.05rem;
+      letter-spacing: 0;
+    }
+
+    .controls p {
+      color: var(--muted);
+      margin: 7px 0 18px;
+      font-size: 0.9rem;
+    }
+
+    .control {
+      padding: 14px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .control:first-of-type {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    label {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-weight: 750;
+      font-size: 0.88rem;
+      margin-bottom: 8px;
+    }
+
+    label span {
+      color: var(--teal-dark);
+      font-variant-numeric: tabular-nums;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--teal);
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 0.79rem;
+      margin-top: 6px;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 7px;
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfcfd;
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+
+    .tab {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--muted);
+      border-radius: 6px;
+      padding: 9px 8px;
+      font: inherit;
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .tab[aria-selected="true"] {
+      color: #fff;
+      border-color: var(--teal);
+      background: var(--teal);
+    }
+
+    .tab:focus-visible,
+    button:focus-visible {
+      outline: 3px solid rgba(14, 124, 123, 0.25);
+      outline-offset: 2px;
+    }
+
+    .workspace-body {
+      padding: 18px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      background: #fff;
+      min-height: 112px;
+    }
+
+    .metric small {
+      display: block;
+      color: var(--muted);
+      font-weight: 750;
+      margin-bottom: 4px;
+    }
+
+    .metric strong {
+      font-size: 1.75rem;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.1;
+    }
+
+    .metric p {
+      margin: 7px 0 0;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .panel-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .visual,
+    .explain {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 16px;
+    }
+
+    .visual h3,
+    .explain h3 {
+      margin: 0 0 10px;
+      font-size: 0.96rem;
+    }
+
+    .explain p,
+    .explain li,
+    .section p,
+    .section li {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .explain ul,
+    .section ul {
+      padding-left: 20px;
+      margin: 10px 0 0;
+    }
+
+    .gauge-wrap {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .gauge {
+      min-height: 190px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      background: linear-gradient(180deg, #fff, #f8fbfd);
+    }
+
+    .ring {
+      --value: 0.7;
+      width: 128px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at center, #fff 0 56%, transparent 57%),
+        conic-gradient(var(--teal) calc(var(--value) * 1turn), #e7edf1 0);
+      display: grid;
+      place-items: center;
+      margin-bottom: 10px;
+    }
+
+    .ring strong {
+      font-size: 1.4rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .gauge span {
+      font-weight: 800;
+    }
+
+    .gauge p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 0.82rem;
+      text-align: center;
+    }
+
+    .heatmap {
+      display: grid;
+      gap: 4px;
+      grid-template-columns: repeat(var(--cols), minmax(14px, 1fr));
+      margin-top: 10px;
+    }
+
+    .cell {
+      aspect-ratio: 1;
+      border-radius: 4px;
+      background: color-mix(in srgb, var(--teal) calc(var(--shade) * 1%), #eef3f6);
+      border: 1px solid rgba(22, 33, 43, 0.05);
+    }
+
+    .scoreline {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .score-row {
+      display: grid;
+      grid-template-columns: 122px 1fr 54px;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+    }
+
+    .bar {
+      height: 12px;
+      border-radius: 999px;
+      background: #e8eef2;
+      overflow: hidden;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      width: calc(var(--pct) * 1%);
+      background: var(--fill, var(--teal));
+      border-radius: inherit;
+    }
+
+    .gate {
+      display: grid;
+      grid-template-columns: 118px 1fr;
+      gap: 16px;
+      align-items: center;
+      margin-top: 12px;
+      border: 1px solid var(--line);
+      padding: 14px;
+      border-radius: var(--radius);
+      background: #fbfcfd;
+    }
+
+    .gate-symbol {
+      width: 104px;
+      height: 104px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--gate-bg, rgba(196, 122, 32, 0.14));
+      color: var(--gate-color, var(--amber));
+      font-size: 2.4rem;
+      font-weight: 900;
+    }
+
+    .gate h3 {
+      margin: 0 0 6px;
+      font-size: 1.08rem;
+    }
+
+    .gate p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .comparison {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px;
+    }
+
+    .comparison strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .context-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 0.9rem;
+    }
+
+    .context-table th,
+    .context-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 11px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .context-table th {
+      color: var(--ink);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .section {
+      margin-top: 22px;
+      padding: 22px;
+    }
+
+    .teaching-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .teach-card,
+    .script-card,
+    .rule-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 16px;
+    }
+
+    .teach-card h3,
+    .script-card h3,
+    .rule-card h3 {
+      margin: 0 0 8px;
+      font-size: 0.98rem;
+    }
+
+    .script-card {
+      background: #f8fbfd;
+      border-left: 4px solid var(--teal);
+    }
+
+    .script-card p {
+      color: var(--ink);
+      font-size: 0.94rem;
+      margin: 0;
+    }
+
+    .term-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .term {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      background: #fff;
+    }
+
+    .term strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .term p {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    .decision-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 0.9rem;
+    }
+
+    .decision-table th,
+    .decision-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 12px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .decision-table th {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .mini-checklist {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .mini-checklist div {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      background: #fbfcfd;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .step {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      background: #fff;
+      min-height: 150px;
+    }
+
+    .step span {
+      display: inline-grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--soft);
+      color: var(--teal-dark);
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .step h3 {
+      margin: 0 0 6px;
+      font-size: 0.95rem;
+    }
+
+    .step p {
+      margin: 0;
+      font-size: 0.84rem;
+    }
+
+    .footer-note {
+      color: var(--shell-muted);
+      font-size: 0.85rem;
+      margin-top: 24px;
+      text-align: center;
+    }
+
+    @media (max-width: 980px) {
+      .intro,
+      .studio,
+      .panel-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .controls {
+        position: static;
+      }
+
+      .summary-grid,
+      .teaching-grid,
+      .term-list,
+      .workflow {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .header-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      nav {
+        justify-content: flex-start;
+      }
+
+      .tabs {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-grid,
+      .gauge-wrap,
+      .comparison-grid,
+      .teaching-grid,
+      .term-list,
+      .workflow {
+        grid-template-columns: 1fr;
+      }
+
+      .gate {
+        grid-template-columns: 1fr;
+      }
+
+      .score-row {
+        grid-template-columns: 98px 1fr 46px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand" aria-label="Quantitative Measures Studio">
+        <div class="brand-mark">Q</div>
+        <div>
+          <strong>Quantitative Measures Studio</strong>
+          <span>Mixed methods measurement simulator</span>
+        </div>
+      </div>
+      <nav aria-label="Primary navigation">
+        <a href="#studio">Studio</a>
+        <a href="#guide">Plain-language guide</a>
+        <a href="#workflow">Analysis flow</a>
+        <a href="#interpretation">Interpretation rules</a>
+        <a href="#glossary">Glossary</a>
+        <a href="#privacy">Privacy</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <h1 id="page-title">A hands-on map of the quantitative strand.</h1>
+        <p>
+          This interactive reference translates the survey-analysis section of the mixed methods design into a working simulation and teaching guide. Adjust the assumptions, then use the plain-language scripts to explain reliability, scale construction, factor-readiness, and inferential cautions without turning the study into a statistics lesson.
+        </p>
+      </div>
+      <aside class="method-note">
+        <h2>Design stance</h2>
+        <p>
+          The quantitative strand supports pattern recognition and structural context. It does not override the QUAL + quan design or convert a purposive sample into a population estimate.
+        </p>
+      </aside>
+    </section>
+
+    <section class="section" aria-labelledby="big-picture-title">
+      <h2 id="big-picture-title">The big picture in one minute</h2>
+      <p>
+        The quantitative analysis is not trying to prove the dissertation through numbers alone. It is doing four more modest and useful things: organizing survey responses, checking whether related items work together, identifying patterns across roles and contexts, and giving the qualitative findings a broader structural backdrop.
+      </p>
+      <div class="teaching-grid">
+        <div class="script-card">
+          <h3>For a methods explanation</h3>
+          <p>"This is a convergent mixed methods design with qualitative priority. The survey helps me see whether the framework travels across a wider group of educators, while the interviews and other qualitative data carry the deeper interpretive work."</p>
+        </div>
+        <div class="script-card">
+          <h3>For a practitioner audience</h3>
+          <p>"I am using the survey to look for patterns in how educators experience AI-related learning conditions, not to rank schools or make sweeping claims about all educators."</p>
+        </div>
+        <div class="script-card">
+          <h3>For a committee question</h3>
+          <p>"The quantitative strand is intentionally bounded. It can support reliability evidence, descriptive patterns, cautious subgroup comparisons, and exploratory structure checks if the final sample supports them."</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="studio" id="studio">
+      <aside class="controls" aria-label="Simulation controls">
+        <h2>Simulation controls</h2>
+        <p>Use generated demonstration data to test what the measurements mean before applying them to real survey exports.</p>
+
+        <div class="control">
+          <label for="sampleSize">Sample size <span id="sampleSizeValue">200</span></label>
+          <input id="sampleSize" type="range" min="30" max="240" value="200" step="5">
+          <div class="hint">N &gt;= 80 opens the exploratory factor analysis gate.</div>
+        </div>
+
+        <div class="control">
+          <label for="itemCount">Items per scale <span id="itemCountValue">6</span></label>
+          <input id="itemCount" type="range" min="3" max="10" value="6" step="1">
+          <div class="hint">Reliability estimates become more stable when item sets are coherent and sufficiently structured.</div>
+        </div>
+
+        <div class="control">
+          <label for="coherence">Item coherence <span id="coherenceValue">72%</span></label>
+          <input id="coherence" type="range" min="25" max="95" value="72" step="1">
+          <div class="hint">Higher coherence means items move together as a scale.</div>
+        </div>
+
+        <div class="control">
+          <label for="missingRate">Missing / "Don't know" <span id="missingRateValue">8%</span></label>
+          <input id="missingRate" type="range" min="0" max="35" value="8" step="1">
+          <div class="hint">For infrastructural items, "Don't know" can be a substantive finding and missing for scale scoring.</div>
+        </div>
+      </aside>
+
+      <section class="workspace" aria-label="Interactive measurement workspace">
+        <div class="tabs" role="tablist" aria-label="Measurement views">
+          <button class="tab" type="button" role="tab" aria-selected="true" data-tab="reliability">Reliability</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-tab="composites">Composite Scores</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-tab="factor">Factor Gate</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-tab="groups">Group Tests</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-tab="context">Secondary Context</button>
+        </div>
+
+        <div class="workspace-body">
+          <div class="summary-grid" aria-label="Current simulation summary">
+            <div class="metric">
+              <small>Alpha estimate</small>
+              <strong id="alphaMetric">.82</strong>
+              <p id="alphaCaption">Useful but assumes tau-equivalence.</p>
+            </div>
+            <div class="metric">
+              <small>Omega estimate</small>
+              <strong id="omegaMetric">.85</strong>
+              <p id="omegaCaption">Preferred when item structure supports it.</p>
+            </div>
+            <div class="metric">
+              <small>Composite scale</small>
+              <strong id="compositeMetric">3.62</strong>
+              <p>Mean scoring keeps the five-point metric interpretable.</p>
+            </div>
+            <div class="metric">
+              <small>Factor analysis</small>
+              <strong id="factorMetric">Open</strong>
+              <p id="factorCaption">Threshold met for exploratory analysis.</p>
+            </div>
+          </div>
+
+          <article class="panel active" id="reliability">
+            <div class="panel-grid">
+              <div class="visual">
+                <h2>Reliability as scale coherence</h2>
+                <div class="gauge-wrap">
+                  <div class="gauge">
+                    <div class="ring" id="alphaRing"><strong id="alphaRingText">.82</strong></div>
+                    <span>Cronbach's alpha</span>
+                    <p>Good first-pass estimate, but it works best when items contribute similarly.</p>
+                  </div>
+                  <div class="gauge">
+                    <div class="ring" id="omegaRing"><strong id="omegaRingText">.85</strong></div>
+                    <span>McDonald's omega</span>
+                    <p>Preferred when possible because it does not require tau-equivalence.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="explain">
+                <h3>How to read it</h3>
+                <p id="reliabilityReadout"></p>
+                <ul>
+                  <li>Alpha asks whether the item group behaves consistently as a scale.</li>
+                  <li>Omega is more flexible when items have unequal relationships to the construct.</li>
+                  <li>Neither statistic proves that the four-dimension framework is valid by itself.</li>
+                </ul>
+                <div class="script-card" style="margin-top:14px;">
+                  <h3>Say it simply</h3>
+                  <p>"I am checking whether the questions that are supposed to measure the same idea actually hang together. Omega is my preferred reliability estimate when I can use it, because it makes fewer assumptions about the items being equally strong."</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel" id="composites">
+            <div class="panel-grid">
+              <div class="visual">
+                <h2>Composite scores on the original Likert metric</h2>
+                <div class="scoreline" id="scoreline"></div>
+                <h3 style="margin-top:18px;">Item response pattern</h3>
+                <div class="heatmap" id="heatmap" aria-label="Simulated item response heatmap"></div>
+              </div>
+              <div class="explain">
+                <h3>Why mean scoring</h3>
+                <p>
+                  Mean scoring keeps noetic, rhetorical, existential, and infrastructural composite scores on the original one-to-five response scale. A score of 3.6 remains interpretable as a position on the survey metric rather than an arbitrary sum.
+                </p>
+                <p id="missingReadout"></p>
+                <div class="script-card" style="margin-top:14px;">
+                  <h3>Say it simply</h3>
+                  <p>"Instead of treating each item separately, I average related items into a scale score. That lets me talk about a broader dimension, like noetic friction, while keeping the score on the same one-to-five scale people answered."</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel" id="factor">
+            <div class="panel-grid">
+              <div class="visual">
+                <h2>Exploratory factor analysis readiness</h2>
+                <div class="gate" id="factorGate">
+                  <div class="gate-symbol" id="gateSymbol">&gt;=</div>
+                  <div>
+                    <h3 id="gateTitle">Minimum threshold met</h3>
+                    <p id="gateText"></p>
+                  </div>
+                </div>
+              </div>
+              <div class="explain">
+                <h3>What this gate does and does not mean</h3>
+                <p>
+                  N &gt;= 80 is treated here as a minimum condition for exploratory analysis, not as full psychometric validation. Stronger validation would require a larger sample, appropriate item-to-respondent ratios, and follow-up evidence.
+                </p>
+                <div class="script-card" style="margin-top:14px;">
+                  <h3>Say it simply</h3>
+                  <p>"If I reach at least 80 responses, I can cautiously explore whether the four dimensions show up as distinguishable patterns in the survey data. If I do not reach that threshold, I should not pretend the survey confirmed the structure statistically."</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel" id="groups">
+            <div class="panel-grid">
+              <div class="visual">
+                <h2>Subgroup and inferential testing caution</h2>
+                <div class="comparison-grid">
+                  <div class="comparison">
+                    <strong>Written AI policy</strong>
+                    <div class="bar"><span id="policyBar" style="--fill: var(--teal);"></span></div>
+                    <p id="policyText"></p>
+                  </div>
+                  <div class="comparison">
+                    <strong>Small-cell risk</strong>
+                    <div class="bar"><span id="cellBar" style="--fill: var(--amber);"></span></div>
+                    <p id="cellText"></p>
+                  </div>
+                  <div class="comparison">
+                    <strong>Effect size</strong>
+                    <div class="bar"><span id="effectBar" style="--fill: var(--indigo);"></span></div>
+                    <p id="effectText"></p>
+                  </div>
+                </div>
+              </div>
+              <div class="explain">
+                <h3>Interpret before testing</h3>
+                <p>
+                  Cross-tabs, chi-square tests, t-tests, ANOVA, correlations, or regression should be used only when sample size, distributions, and assumptions support them. Effect sizes matter because significance alone is not enough.
+                </p>
+                <div class="script-card" style="margin-top:14px;">
+                  <h3>Say it simply</h3>
+                  <p>"I may compare groups, but only when the data can support that comparison. If a subgroup is too small, I will describe the pattern rather than overstate it with a test."</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel" id="context">
+            <div class="panel-grid">
+              <div class="visual">
+                <h2>Secondary datasets as context</h2>
+                <table class="context-table">
+                  <thead>
+                    <tr>
+                      <th>Source</th>
+                      <th>Useful for</th>
+                      <th>Boundary</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>NCES School Pulse Panel</td>
+                      <td>National context on school conditions, AI-related practices, and policy signals where available.</td>
+                      <td>Does not directly measure pedagogical friction dimensions.</td>
+                    </tr>
+                    <tr>
+                      <td>RAND American Educator Panel</td>
+                      <td>Broader educator patterns around AI adoption, literacy instruction, or institutional supports.</td>
+                      <td>Acts as structural proxy data, not direct evidence of authorial ownership or cognitive bypass.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="explain">
+                <h3>Bounded inference</h3>
+                <p>
+                  These datasets help explain the landscape around the original survey. They should not be used as if they directly validate the Pedagogical Friction Framework.
+                </p>
+                <div class="script-card" style="margin-top:14px;">
+                  <h3>Say it simply</h3>
+                  <p>"NCES and RAND can show the national backdrop, such as AI policy or adoption patterns. They cannot directly tell me whether educators are preserving noetic, rhetorical, or existential friction."</p>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </section>
+
+    <section class="section" id="guide">
+      <h2>Plain-language guide</h2>
+      <p>Use this section when you need to explain the quantitative strand to a committee member, practitioner audience, or colleague who does not live inside measurement language.</p>
+      <div class="teaching-grid">
+        <div class="teach-card">
+          <h3>1. What the survey is doing</h3>
+          <p>The survey is looking for patterns in how educators report the conditions that preserve or erode meaningful learning work in the presence of generative AI.</p>
+        </div>
+        <div class="teach-card">
+          <h3>2. What scales are doing</h3>
+          <p>Several related questions are grouped into broader dimension scores so the study can talk about noetic, rhetorical, existential, and infrastructural friction as interpretable constructs.</p>
+        </div>
+        <div class="teach-card">
+          <h3>3. What reliability is doing</h3>
+          <p>Reliability checks whether the grouped items are coherent enough to be treated as a scale. It is a quality check on the measurement, not a verdict on the theory.</p>
+        </div>
+        <div class="teach-card">
+          <h3>4. What factor analysis is doing</h3>
+          <p>Exploratory factor analysis asks whether response patterns appear to separate into the expected dimensions. It is exploratory because this study is not a full validation project.</p>
+        </div>
+        <div class="teach-card">
+          <h3>5. What group comparisons are doing</h3>
+          <p>Comparisons may show whether reported practices differ by policy presence, role, grade band, or school context, but only when the sample and assumptions support that move.</p>
+        </div>
+        <div class="teach-card">
+          <h3>6. What secondary data is doing</h3>
+          <p>NCES and RAND provide national context. They help situate the study, but they are not direct measurements of pedagogical friction.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="workflow">
+      <h2>Analysis flow</h2>
+      <p>The workflow keeps early organization accessible while preserving a reproducible path for more advanced analysis.</p>
+      <div class="workflow">
+        <div class="step">
+          <span>1</span>
+          <h3>Clean responses</h3>
+          <p>Remove incomplete responses, check branch routing, recode Likert items, and flag "Don't know."</p>
+        </div>
+        <div class="step">
+          <span>2</span>
+          <h3>Describe patterns</h3>
+          <p>Review frequencies, means, distributions, role groups, grade bands, experience, FRPL, urbanicity, and policy presence.</p>
+        </div>
+        <div class="step">
+          <span>3</span>
+          <h3>Create composites</h3>
+          <p>Use mean scores for noetic, rhetorical, existential, and infrastructural friction scales.</p>
+        </div>
+        <div class="step">
+          <span>4</span>
+          <h3>Assess reliability</h3>
+          <p>Use alpha and omega where sample size and item structure support the analysis.</p>
+        </div>
+        <div class="step">
+          <span>5</span>
+          <h3>Integrate carefully</h3>
+          <p>Use quantitative findings as patterns and context, then integrate with qualitative evidence through joint displays.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="interpretation">
+      <h2>Interpretation rules</h2>
+      <ul>
+        <li>Report small subgroups descriptively rather than forcing inferential tests.</li>
+        <li>Treat a purposive, nonprobability survey as evidence of patterns within the study sample, not population estimates.</li>
+        <li>Keep "Don't know" visible on infrastructural items because uncertainty can be a finding about policy clarity and organizational conditions.</li>
+        <li>Use R when possible for reproducibility; jamovi or JASP remain defensible alternatives when workflow constraints require a more accessible interface.</li>
+      </ul>
+      <table class="decision-table" aria-label="Quantitative analysis decision rules">
+        <thead>
+          <tr>
+            <th>Decision point</th>
+            <th>Use when</th>
+            <th>Plain-language interpretation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Item-level descriptives</td>
+            <td>Always, especially for "Don't know" infrastructural responses.</td>
+            <td>Shows what respondents said before the data are compressed into scale scores.</td>
+          </tr>
+          <tr>
+            <td>Composite mean scores</td>
+            <td>Items are conceptually aligned and missingness is handled transparently.</td>
+            <td>Creates an interpretable dimension score that still lives on the one-to-five survey metric.</td>
+          </tr>
+          <tr>
+            <td>Alpha and omega</td>
+            <td>Each scale has enough items and response variation to support internal consistency checks.</td>
+            <td>Tests whether the grouped items seem to function together as a measurement scale.</td>
+          </tr>
+          <tr>
+            <td>Exploratory factor analysis</td>
+            <td>Achieved sample is at least N = 80 and item structure is appropriate.</td>
+            <td>Explores whether the four dimensions are visible in response patterns, without claiming formal validation.</td>
+          </tr>
+          <tr>
+            <td>Inferential tests</td>
+            <td>Cell sizes, distributions, and assumptions are adequate.</td>
+            <td>Supports cautious group comparisons while keeping effect size and study design in view.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section" id="glossary">
+      <h2>Quick glossary</h2>
+      <p>Short definitions for the terms most likely to need explanation in conversation.</p>
+      <div class="term-list">
+        <div class="term">
+          <strong>Likert item</strong>
+          <p>A single survey question with ordered response choices, often from strongly disagree to strongly agree.</p>
+        </div>
+        <div class="term">
+          <strong>Composite score</strong>
+          <p>An average of related items used to represent a broader concept, such as infrastructural friction.</p>
+        </div>
+        <div class="term">
+          <strong>Internal consistency</strong>
+          <p>A check of whether items meant to measure the same idea tend to move together.</p>
+        </div>
+        <div class="term">
+          <strong>Tau-equivalence</strong>
+          <p>The assumption that items contribute equally to the underlying construct. Alpha leans on this assumption more than omega does.</p>
+        </div>
+        <div class="term">
+          <strong>Exploratory factor analysis</strong>
+          <p>A method for seeing whether survey items cluster into underlying dimensions in the data.</p>
+        </div>
+        <div class="term">
+          <strong>Effect size</strong>
+          <p>A measure of practical magnitude. It helps answer whether a difference is meaningful, not only statistically detectable.</p>
+        </div>
+      </div>
+      <div class="mini-checklist">
+        <div><strong>One-sentence anchor:</strong> The quantitative strand checks whether the survey patterns are coherent, interpretable, and useful for integration with the qualitative findings.</div>
+        <div><strong>Common caution:</strong> A strong reliability estimate does not prove the theory; it only supports using that item group as a scale in this sample.</div>
+        <div><strong>Best framing:</strong> These analyses support bounded, transparent interpretation rather than broad generalization.</div>
+      </div>
+    </section>
+
+    <section class="section" id="privacy">
+      <h2>Privacy and use</h2>
+      <p>
+        This page is a static simulation. It uses no external scripts, analytics, cookies, forms, storage, or real participant data. Real survey analysis should happen in a controlled workflow using de-identified exports and an audit trail.
+      </p>
+    </section>
+
+    <p class="footer-note">Built as a GitHub Pages-ready reference for mixed methods quantitative measurement decisions.</p>
+  </main>
+
+  <script>
+    const state = {
+      sampleSize: 200,
+      itemCount: 6,
+      coherence: 72,
+      missingRate: 8
+    };
+
+    const dimensions = [
+      { name: "Noetic", base: 3.7, color: "var(--teal)" },
+      { name: "Rhetorical", base: 3.5, color: "var(--indigo)" },
+      { name: "Existential", base: 3.3, color: "var(--amber)" },
+      { name: "Infrastructural", base: 3.1, color: "var(--green)" }
+    ];
+
+    const controls = {
+      sampleSize: document.querySelector("#sampleSize"),
+      itemCount: document.querySelector("#itemCount"),
+      coherence: document.querySelector("#coherence"),
+      missingRate: document.querySelector("#missingRate")
+    };
+
+    const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+    const fmt = value => value.toFixed(2).replace(/^0/, "");
+
+    function reliability() {
+      const coherence = state.coherence / 100;
+      const items = state.itemCount;
+      const missingPenalty = state.missingRate / 300;
+      const alpha = clamp((items * coherence) / (1 + (items - 1) * coherence) - missingPenalty, 0.18, 0.96);
+      const omegaBoost = (1 - Math.abs(0.72 - coherence)) * 0.045;
+      const omega = clamp(alpha + omegaBoost + 0.015, 0.2, 0.98);
+      return { alpha, omega };
+    }
+
+    function updateMetrics() {
+      const { alpha, omega } = reliability();
+      const composite = clamp(2.2 + state.coherence / 55 - state.missingRate / 80, 1, 5);
+      const factorOpen = state.sampleSize >= 80;
+
+      document.querySelector("#sampleSizeValue").textContent = state.sampleSize;
+      document.querySelector("#itemCountValue").textContent = state.itemCount;
+      document.querySelector("#coherenceValue").textContent = `${state.coherence}%`;
+      document.querySelector("#missingRateValue").textContent = `${state.missingRate}%`;
+
+      document.querySelector("#alphaMetric").textContent = fmt(alpha);
+      document.querySelector("#omegaMetric").textContent = fmt(omega);
+      document.querySelector("#alphaRingText").textContent = fmt(alpha);
+      document.querySelector("#omegaRingText").textContent = fmt(omega);
+      document.querySelector("#alphaRing").style.setProperty("--value", alpha);
+      document.querySelector("#omegaRing").style.setProperty("--value", omega);
+      document.querySelector("#compositeMetric").textContent = composite.toFixed(2);
+      document.querySelector("#factorMetric").textContent = factorOpen ? "Open" : "Closed";
+      document.querySelector("#factorCaption").textContent = factorOpen
+        ? "Threshold met for exploratory analysis."
+        : "Report reliability evidence only.";
+
+      document.querySelector("#reliabilityReadout").textContent =
+        `With ${state.itemCount} items per scale and ${state.coherence}% simulated coherence, alpha is ${fmt(alpha)} and omega is ${fmt(omega)}. Omega is the stronger interpretive anchor when the item structure supports it.`;
+
+      document.querySelector("#missingReadout").textContent =
+        `${state.missingRate}% missing or "Don't know" responses would be excluded from scale construction but retained in item-level reporting, especially for infrastructural conditions.`;
+
+      renderScores(composite);
+      renderHeatmap();
+      renderFactorGate(factorOpen);
+      renderGroupCautions();
+    }
+
+    function renderScores(composite) {
+      const scoreline = document.querySelector("#scoreline");
+      scoreline.innerHTML = "";
+      dimensions.forEach((dimension, index) => {
+        const offset = (index - 1.5) * 0.18;
+        const missingEffect = index === 3 ? state.missingRate / 65 : state.missingRate / 120;
+        const score = clamp(dimension.base + (state.coherence - 70) / 80 - missingEffect + offset, 1, 5);
+        const row = document.createElement("div");
+        row.className = "score-row";
+        row.innerHTML = `
+          <strong>${dimension.name}</strong>
+          <div class="bar"><span style="--pct:${score * 20}; --fill:${dimension.color};"></span></div>
+          <span>${score.toFixed(2)}</span>
+        `;
+        scoreline.appendChild(row);
+      });
+    }
+
+    function renderHeatmap() {
+      const heatmap = document.querySelector("#heatmap");
+      const columns = state.itemCount;
+      heatmap.style.setProperty("--cols", columns);
+      heatmap.innerHTML = "";
+      const rows = 8;
+      for (let row = 0; row < rows; row += 1) {
+        for (let col = 0; col < columns; col += 1) {
+          const wave = Math.sin((row + 1) * (col + 2) + state.coherence / 12);
+          const shade = clamp(48 + state.coherence * 0.45 + wave * 18 - state.missingRate * 0.8, 8, 96);
+          const cell = document.createElement("div");
+          cell.className = "cell";
+          cell.style.setProperty("--shade", shade);
+          cell.title = `Simulated response intensity ${Math.round(shade)}%`;
+          heatmap.appendChild(cell);
+        }
+      }
+    }
+
+    function renderFactorGate(open) {
+      const gate = document.querySelector("#factorGate");
+      const symbol = document.querySelector("#gateSymbol");
+      const title = document.querySelector("#gateTitle");
+      const text = document.querySelector("#gateText");
+      if (open) {
+        gate.style.setProperty("--gate-bg", "rgba(53, 125, 79, 0.14)");
+        gate.style.setProperty("--gate-color", "var(--green)");
+        symbol.textContent = ">=";
+        title.textContent = "Minimum threshold met";
+        text.textContent = `N = ${state.sampleSize} meets the N >= 80 gate. Exploratory factor analysis may be considered, but the result is still exploratory and not full validation.`;
+      } else {
+        gate.style.setProperty("--gate-bg", "rgba(182, 70, 70, 0.12)");
+        gate.style.setProperty("--gate-color", "var(--red)");
+        symbol.textContent = "<";
+        title.textContent = "Factor analysis not supported";
+        text.textContent = `N = ${state.sampleSize} falls below the minimum gate. Report internal consistency and describe the four dimensions as theoretically grounded, not psychometrically confirmed.`;
+      }
+    }
+
+    function renderGroupCautions() {
+      const policySignal = clamp(42 + state.coherence * 0.44 - state.missingRate * 0.7, 10, 94);
+      const smallCellRisk = clamp(88 - state.sampleSize / 3 + state.missingRate * 1.2, 8, 90);
+      const effect = clamp(18 + state.coherence * 0.55 - smallCellRisk * 0.2, 8, 86);
+
+      document.querySelector("#policyBar").style.setProperty("--pct", policySignal);
+      document.querySelector("#cellBar").style.setProperty("--pct", smallCellRisk);
+      document.querySelector("#effectBar").style.setProperty("--pct", effect);
+
+      document.querySelector("#policyText").textContent =
+        `${Math.round(policySignal)}% simulated signal. Compare policy groups only if assumptions and cell sizes support it.`;
+      document.querySelector("#cellText").textContent =
+        `${Math.round(smallCellRisk)}% caution level. Small subgroups should stay descriptive.`;
+      document.querySelector("#effectText").textContent =
+        `${Math.round(effect)}% simulated practical magnitude. Report effect sizes with any significance test.`;
+    }
+
+    Object.entries(controls).forEach(([key, input]) => {
+      input.addEventListener("input", event => {
+        state[key] = Number(event.target.value);
+        updateMetrics();
+      });
+    });
+
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(item => item.setAttribute("aria-selected", "false"));
+        document.querySelectorAll(".panel").forEach(panel => panel.classList.remove("active"));
+        tab.setAttribute("aria-selected", "true");
+        document.querySelector(`#${tab.dataset.tab}`).classList.add("active");
+      });
+    });
+
+    updateMetrics();
+  </script>
+</body>
+</html>
