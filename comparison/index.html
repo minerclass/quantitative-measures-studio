@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantitative Measurements Educational Simulation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="background-animation"></div>
+
+    <div style="max-width: 1200px; margin: 1rem auto 0; padding: 0 1.5rem;">
+        <a href="../" style="color: #ffffff; text-decoration: none; font-weight: 700; opacity: 0.9;">Back to Quantitative Measures Studio</a>
+    </div>
+
+    <header class="glass-panel">
+        <h1>Pedagogical Friction Framework</h1>
+        <p>Interactive Quantitative Learning Guide</p>
+        <p class="subtitle">A tool to understand and explain your methodology.</p>
+    </header>
+
+    <nav class="glass-panel">
+        <ul>
+            <li><a href="#data-cleaning" class="active">Data Cleaning</a></li>
+            <li><a href="#composite">Composite Scores</a></li>
+            <li><a href="#consistency">Internal Consistency</a></li>
+            <li><a href="#efa">Factor Analysis</a></li>
+            <li><a href="#inferential">Inferential Stats</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- Global Controls -->
+        <div class="global-controls glass-panel">
+            <label class="toggle-switch">
+                <input type="checkbox" id="global-explain-toggle">
+                <span class="slider round"></span>
+            </label>
+            <span class="toggle-label">Toggle "Explain it Simply" Mode</span>
+        </div>
+
+        <!-- Section 1: Data Cleaning -->
+        <section id="data-cleaning" class="glass-panel section-container active-section">
+            <div class="section-header">
+                <h2>1. Data Cleaning & Missing Data</h2>
+            </div>
+            
+            <div class="content-wrapper">
+                <div class="academic-text view-mode active-view">
+                    <p>The survey incorporates role-specific branching. Responses of <em>"Don't know"</em> on infrastructural items are treated as missing during scale construction but are reported as a separate category in descriptive analysis.</p>
+                    <p>The "Don't know" rate is interpreted as <span class="tooltip" data-tooltip="Meaning it tells us something important about the school environment, rather than just being an empty answer.">substantive evidence</span> rather than only a data quality issue.</p>
+                </div>
+                <div class="simple-text view-mode">
+                    <p><strong>The Analogy:</strong> Imagine asking students if there's a school policy on using calculators. If 30% say "I don't know", that's not just missing data—it's a massive finding! It means the school has terrible communication.</p>
+                    <p>In our study, if teachers don't know the AI policy, that uncertainty is actual evidence of <strong>infrastructural friction</strong>.</p>
+                </div>
+            </div>
+            
+            <div class="interactive-box">
+                <div class="control-group">
+                    <label for="dont-know-slider">Simulate "Don't Know" Rate: <span id="dont-know-val">15%</span></label>
+                    <input type="range" id="dont-know-slider" min="0" max="50" value="15">
+                </div>
+                <div class="chart-container">
+                    <canvas id="dataCleaningChart"></canvas>
+                </div>
+                <p class="insight" id="data-cleaning-insight">Insight: 15% missing data. This indicates moderate infrastructural friction.</p>
+            </div>
+        </section>
+
+        <!-- Section 2: Composite Scores -->
+        <section id="composite" class="glass-panel section-container">
+            <h2>2. Composite Scoring: Mean vs. Sum</h2>
+            
+            <div class="content-wrapper">
+                <div class="academic-text view-mode active-view">
+                    <p>Composite scores utilize <strong>mean scoring</strong> rather than sum scoring. This ensures scores remain interpretable on the original 5-point <span class="tooltip" data-tooltip="A rating scale, e.g., 1 (Strongly Disagree) to 5 (Strongly Agree).">Likert metric</span> and transparently handles item-level missingness.</p>
+                </div>
+                <div class="simple-text view-mode">
+                    <p><strong>The Analogy:</strong> If a student takes 4 out of 5 quizzes, a <em>Sum Score</em> gives them a 0 on the missed quiz, unfairly dropping their total grade. A <em>Mean Score</em> averages the 4 they took.</p>
+                    <p>By taking the average (Mean), the final score stays between 1 and 5, which is much easier to explain than an arbitrary sum like "17 out of 25".</p>
+                </div>
+            </div>
+
+            <div class="interactive-box">
+                <div class="scoring-demo">
+                    <div class="items-grid">
+                        <p class="instruction">Toggle missing responses to see how the scores react.</p>
+                        <div>Q1: <select class="item-val"><option value="4">4 - Agree</option><option value="5">5 - Strongly Agree</option><option value="">Missing</option></select></div>
+                        <div>Q2: <select class="item-val"><option value="5">5 - Strongly Agree</option><option value="3">3 - Neutral</option><option value="">Missing</option></select></div>
+                        <div>Q3: <select class="item-val"><option value="">Missing</option><option value="4">4 - Agree</option><option value="2">2 - Disagree</option></select></div>
+                        <div>Q4: <select class="item-val"><option value="4">4 - Agree</option><option value="4">4 - Agree</option><option value="">Missing</option></select></div>
+                    </div>
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <h3>Sum Score</h3>
+                            <div id="sum-result" class="score-val">-</div>
+                            <small id="sum-explain">Drops heavily if a question is missed.</small>
+                        </div>
+                        <div class="result-card highlight">
+                            <h3>Mean Score (Preferred)</h3>
+                            <div id="mean-result" class="score-val">-</div>
+                            <small id="mean-explain">Stays stable on the 1-5 scale.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Internal Consistency (Core Simulation) -->
+        <section id="consistency" class="glass-panel section-container">
+            <h2>3. Internal Consistency: Alpha vs. Omega</h2>
+            
+            <div class="content-wrapper">
+                <div class="academic-text view-mode active-view">
+                    <p>Internal consistency is assessed to see if item groups function coherently as a scale. Cronbach's &alpha; assumes <span class="tooltip" data-tooltip="The strict assumption that all items have equal variances (equal true score variance).">tau-equivalence</span>. McDonald's &omega; is preferred because it does not assume tau-equivalence and is less sensitive to &alpha;'s limitations.</p>
+                </div>
+                <div class="simple-text view-mode">
+                    <p><strong>The Choir Analogy:</strong> Internal consistency asks: "Is everyone in the choir singing the same song?"</p>
+                    <p><strong>Cronbach's Alpha</strong> assumes every singer is singing at the <em>exact same volume</em> (this is tau-equivalence). If the sopranos are louder, Alpha gets confused and falsely says the choir is bad.</p>
+                    <p><strong>McDonald's Omega</strong> is smarter. It knows they are singing the same song, even if the volumes (variances) differ. It's a more accurate judge of the choir.</p>
+                </div>
+            </div>
+            
+            <div class="interactive-box simulation-grid">
+                <div class="controls-panel">
+                    <h3>Experiment with the Choir</h3>
+                    <p class="instruction">Move the "Variance Spread" slider to see Alpha fail while Omega succeeds.</p>
+                    <div class="control-group">
+                        <label>Item Count (Singers): <span id="k-val">4</span></label>
+                        <input type="range" id="k-slider" min="3" max="10" value="4">
+                    </div>
+                    <div class="control-group">
+                        <label>Inter-item Correlation (Song Agreement): <span id="r-val">0.40</span></label>
+                        <input type="range" id="r-slider" min="0.10" max="0.90" step="0.05" value="0.40">
+                    </div>
+                    <div class="control-group">
+                        <label class="highlight-label">Variance Spread (Volume Differences): <span id="tau-val">None</span></label>
+                        <input type="range" id="tau-slider" min="0" max="3" step="1" value="0">
+                    </div>
+                </div>
+                
+                <div class="metrics-panel">
+                    <div class="metric-card alpha-card">
+                        <h3>Cronbach's &alpha;</h3>
+                        <div class="dial">
+                            <svg viewBox="0 0 36 36" class="circular-chart orange">
+                                <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path id="alpha-path" class="circle" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            </svg>
+                            <div id="alpha-display" class="percentage">0.00</div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card omega-card">
+                        <h3>McDonald's &omega;</h3>
+                        <div class="dial">
+                            <svg viewBox="0 0 36 36" class="circular-chart green">
+                                <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path id="omega-path" class="circle" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            </svg>
+                            <div id="omega-display" class="percentage">0.00</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="insight-panel full-width">
+                    <div class="guided-text" id="consistency-insight">
+                        <!-- Dynamic text goes here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Factor Analysis -->
+        <section id="efa" class="glass-panel section-container">
+            <h2>4. Exploratory Factor Analysis (EFA)</h2>
+            
+            <div class="content-wrapper">
+                <div class="academic-text view-mode active-view">
+                    <p>EFA is used to examine whether the four dimensions are empirically distinguishable. A minimum achieved sample of <span class="tooltip" data-tooltip="Sample size must be large enough to detect reliable correlations.">N &ge; 80</span> is required as a threshold for exploratory analysis. If $N < 80$, the structure is theoretically grounded but not psychometrically confirmed.</p>
+                </div>
+                <div class="simple-text view-mode">
+                    <p><strong>The Sorting Analogy:</strong> If we dump all our survey questions on a table, do they naturally sort themselves into our 4 buckets (Noetic, Rhetorical, Existential, Infrastructural)?</p>
+                    <p>EFA is the machine that sorts them based on data patterns. But the machine is power-hungry; it refuses to turn on unless we feed it at least 80 people. With fewer people, we rely on theory instead of the machine.</p>
+                </div>
+            </div>
+            
+            <div class="interactive-box">
+                <div class="control-group">
+                    <label>Achieved Sample Size (N): <span id="n-val">50</span></label>
+                    <input type="range" id="n-slider" min="30" max="200" value="50">
+                    <p id="efa-insight-text" class="guided-text-small" style="margin-top: 10px; color: #ef4444;">N is too low. The sorting machine is offline.</p>
+                </div>
+                
+                <div id="efa-visualization" class="efa-vis locked">
+                    <div class="lock-overlay">
+                        <span class="icon">🔒</span>
+                        <p>EFA Locked: Insufficient Data (N < 80)</p>
+                    </div>
+                    <div class="factor-nodes">
+                        <div class="factor noetic">Noetic</div>
+                        <div class="factor rhetorical">Rhetorical</div>
+                        <div class="factor existential">Existential</div>
+                        <div class="factor infrastructural">Infrastructural</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Inferential Stats -->
+        <section id="inferential" class="glass-panel section-container">
+            <h2>5. Inferential Stats & Effect Sizes</h2>
+            
+            <div class="content-wrapper">
+                <div class="academic-text view-mode active-view">
+                    <p>Significance testing (t-tests, ANOVA) will be conducted to examine group differences. <span class="tooltip" data-tooltip="A metric that quantifies the magnitude of a difference between groups.">Effect sizes</span> (Cohen’s d, &eta;²) will be reported alongside p-values, as significance alone is insufficient for interpreting findings.</p>
+                </div>
+                <div class="simple-text view-mode">
+                    <p><strong>The Analogy:</strong> A <em>p-value</em> tells us if a difference is REAL (not a fluke). An <em>Effect Size</em> tells us if the difference MATTERS.</p>
+                    <p>Imagine a weight loss pill. A study might find it causes 0.1 lbs of weight loss, and the p-value says this is statistically significant (real). But an effect size would show that 0.1 lbs is practically meaningless! We need both to tell the full story.</p>
+                </div>
+            </div>
+            
+            <div class="interactive-box flex-row">
+                <div class="scenario-panel">
+                    <h3>Scenario: Written AI Policy vs. No Policy</h3>
+                    <p>We ran a t-test on Existential Friction scores.</p>
+                    <div class="stat-readout">
+                        <div><strong>p-value:</strong> <span class="sig tooltip" data-tooltip="Below 0.05, so the difference is statistically significant (real).">0.034 *</span></div>
+                        <div><strong>Cohen's d:</strong> <span class="effect tooltip" data-tooltip="0.62 is a medium-to-large effect. It means the policy makes a noticeable impact on friction.">0.62 (Medium)</span></div>
+                    </div>
+                    <div class="guided-text" style="margin-top: 1rem; font-size: 0.9rem;">
+                        <strong>How to explain this:</strong> "Teachers with a written AI policy had lower friction. We know this wasn't a fluke (p < .05), and more importantly, Cohen's d shows that having a policy makes a <em>moderately large, practical difference</em> in their daily experience."
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="inferentialChart"></canvas>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -20,10 +20,13 @@ The simulations use generated demonstration data only. They do not collect, stor
 - Effect-size interpretation alongside statistical significance
 - The role of NCES and RAND datasets as national context rather than direct framework measures
 - A short glossary and decision-rule table for remembering what each statistical move does
+- A linked `comparison/` page adapted from an Antigravity simulation for a more analogy-driven teaching view
 
 ## Use
 
 Open `index.html` in a browser, or publish the repository with GitHub Pages from the `main` branch at the repository root.
+
+The comparison page is available at `comparison/index.html`.
 
 ## Privacy Note
 
