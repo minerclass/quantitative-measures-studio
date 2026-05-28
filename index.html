@@ -173,6 +173,46 @@
       font-size: 0.94rem;
     }
 
+    .paired-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 0 0 22px;
+      padding: 16px 18px;
+      border: 1px solid rgba(14, 124, 123, 0.45);
+      border-radius: var(--radius);
+      background: rgba(14, 124, 123, 0.14);
+      color: var(--shell-ink);
+    }
+
+    .paired-link p {
+      margin: 0;
+      color: var(--shell-muted);
+      font-size: 0.94rem;
+    }
+
+    .paired-link strong {
+      color: #ffffff;
+    }
+
+    .paired-link a {
+      flex: 0 0 auto;
+      color: #061016;
+      background: #f5c05f;
+      text-decoration: none;
+      font-weight: 850;
+      padding: 10px 12px;
+      border-radius: 6px;
+    }
+
+    .paired-link a:hover,
+    .paired-link a:focus-visible {
+      background: #ffd27a;
+      outline: 3px solid rgba(245, 192, 95, 0.28);
+      outline-offset: 2px;
+    }
+
     .studio {
       display: grid;
       grid-template-columns: 315px minmax(0, 1fr);
@@ -716,6 +756,11 @@
       .score-row {
         grid-template-columns: 98px 1fr 46px;
       }
+
+      .paired-link {
+        align-items: flex-start;
+        flex-direction: column;
+      }
     }
   </style>
 </head>
@@ -756,6 +801,14 @@
         </p>
       </aside>
     </section>
+
+    <aside class="paired-link" aria-label="Companion page link">
+      <div>
+        <strong>Want the analogy-driven version?</strong>
+        <p>Open the companion simulation for a simpler tutorial view of the same quantitative measurement ideas.</p>
+      </div>
+      <a href="comparison/">Open comparison page</a>
+    </aside>
 
     <section class="section" aria-labelledby="big-picture-title">
       <h2 id="big-picture-title">The big picture in one minute</h2>
